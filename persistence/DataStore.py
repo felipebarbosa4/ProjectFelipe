@@ -3,28 +3,28 @@
 # Importing required modules demonstrates modular programming.
 import csv
 from model.Record import Record
+import os
 
 # DataStore Class demonstrates Object-Oriented Programming (OOP)
 class DataStore:
     # Docstring for method matches the requirement of code documentation.
     def read_csv(self, filename):
-        """Reads data from a CSV file and returns a list of records. This demonstrates file I/O."""
-        # Data structure to hold records demonstrates data encapsulation.
         records = []
+
         try:
-            # Exception Handling
-            with open(filename, 'r', encoding='utf-8') as f:  # Ensuring UTF-8 encoding
+            with open(filename, 'r', encoding='ansi') as f:
                 reader = csv.DictReader(f)
-                next(reader, None)  # Skip the header
-                # Loop demonstrates control structures.
                 for row in reader:
-                    # Object Instantiation
                     record = Record(row)
-                    # Data manipulation
                     records.append(record)
         except FileNotFoundError:
-            print("File not found.")  # Error message
-        # Return statement demonstrates the function's exit point.
-        return records[:2000]
+            print("File not found.")
+        return records[:100]
 
-# Your other classes and methods can be explained in a similar manner.
+    def save_csv(self, filename, records):
+        keys = vars(records[0]).keys()
+        with open(filename, 'w') as output_file:
+            dict_writer = csv.DictWriter(output_file, fieldnames=keys)
+            dict_writer.writeheader()
+            for record in records:
+                dict_writer.writerow(vars(record))
