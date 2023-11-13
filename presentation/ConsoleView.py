@@ -6,17 +6,41 @@ from model.Record import Record
 
 # ConsoleView class for presentation layer
 class ConsoleView:
+    """
+    Provides a console-based user interface for interacting with the Service class.
+
+    This class acts as a presentation layer, allowing users to interact with the application
+    through a series of console-based menus and prompts.
+
+    Methods:
+    - display_name: Displays the creator's name.
+    - display_data: Prints all records currently loaded.
+    - main_menu: Presents the main menu and handles user input.
+    """
+
     def __init__(self):
+        """
+        Initializes the ConsoleView object and sets up the associated Service object.
+        """
         self.service = Service()
 
     def display_name(self):
+        """
+        Displays the name of the creator.
+        """
         print("Felipe Barbosa Figueira")
 
     def display_data(self):
+        """
+        Displays all records currently loaded in the Service object.
+        """
         for i, record in enumerate(self.service.records):
             print(f"{i}: {record}")
 
     def main_menu(self):
+        """
+        Presents the main menu to the user and handles the user's choices to interact with the application.
+        """
         while True:
             self.display_name()
             print(
