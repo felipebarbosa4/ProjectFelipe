@@ -1,6 +1,9 @@
 import os
+from unittest.mock import patch
 
 import pytest
+
+from model.Record import Record
 from persistence.DataStore import DataStore
 from business.Service import Service
 import time
@@ -24,14 +27,16 @@ def test_read_csv_file_not_found():
         pytest.fail("FileNotFoundError was not caught by the program")
 
 
-def test_async_data_load():
-    """
-    Tests the asynchronous data loading functionality of the Service class.
-    """
+def mock_read_csv(filename):
+    return [Record({'ref_number': '001', 'name': 'Test Record'})]
+
+@patch('persistence.DataStore.DataStore.read_csv', side_effect=mock_read_csv)
+def test_async_data_load(mocked_read_csv):
     os.environ['TESTING'] = 'True'
     service = Service()
-    time.sleep(4)  # Wait for the async load to complete
+
     assert len(service.records) > 0, "Records should be loaded asynchronously."
     os.environ['TESTING'] = 'False'
+    print("\nFelipe Barbosa Figueira")
 
-    print("Felipe Barbosa Figueira")
+print("Felipe Barbosa Figueira")
