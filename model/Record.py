@@ -9,7 +9,12 @@ class Record:
     Args:
         data (dict): A dictionary representing the data fields and their values for the record.
     """
-    
+
+    def search_records(records, search_criteria):
+        # search_criteria is a dict: {'column_name': 'value_to_search', ...}
+        filtered_records = [record for record in records if
+                            all(record[column] == value for column, value in search_criteria.items())]
+        return filtered_records
 
     def __init__(self, data):
         """
