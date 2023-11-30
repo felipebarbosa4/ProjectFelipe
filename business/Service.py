@@ -1,5 +1,8 @@
 # Made by Felipe Barbosa Figueira
 import os
+
+from matplotlib import pyplot as plt
+
 from model.Record import Record
 from persistence.DataStore import DataStore
 
@@ -65,6 +68,40 @@ class Service:
         """
         del self.records[index]
 
+    def generate_chart(self):
+        print("1: Horizontal Bar Chart\n2: Vertical Bar Chart\n3: Pie Chart")
+        chart_choice = input("Select chart type: ")
+        column_name = input("Enter column name for chart data: ")
+
+        if chart_choice == '1':
+            self.create_horizontal_bar_chart(column_name)
+        elif chart_choice == '2':
+            self.create_vertical_bar_chart(column_name)
+        elif chart_choice == '3':
+            self.create_pie_chart(column_name)
+
+    def create_horizontal_bar_chart(self, column_name):
+        data = self.service.get_column_data(column_name)
+        plt.barh(list(data.keys()), list(data.values()))
+        plt.xlabel('Count')
+        plt.ylabel(column_name)
+        plt.title('Horizontal Bar Chart')
+        plt.show()
+
+    def create_vertical_bar_chart(self, column_name):
+        data = self.service.get_column_data(column_name)
+        plt.bar(list(data.keys()), list(data.values()))
+        plt.xlabel(column_name)
+        plt.ylabel('Count')
+        plt.title('Vertical Bar Chart')
+        plt.show()
+
+    def create_pie_chart(self, column_name):
+        data = self.service.get_column_data(column_name)
+        plt.pie(list(data.values()), labels=list(data.keys()), autopct='%1.1f%%')
+        plt.title('Pie Chart')
+        plt.show()
+
     def load_data_async(self):
         """
         Initiates asynchronous loading of data from the CSV file.
@@ -81,3 +118,53 @@ class Service:
         self.records = records
         if os.environ.get('TESTING') != 'True':
             print("Records updated asynchronously.")
+
+    def get_column_data(self, column_name):
+        """
+        Gathers data for a specific column to generate charts.
+
+        Args:
+            column_name (str): The name of the column.
+
+        Returns:
+            dict: A dictionary with unique values as keys and their occurrences as values.
+        """
+        column_data = {}
+        for record in self.records:
+            value = getattr(record, column_name, None)
+            if value:
+                column_data[value] = column_data.get(value, 0) + 1
+        return column_data
+
+    def column_exists(self, column_name):
+        """
+        Checks if a column exists in the record data.
+
+        Args:
+            column_name (str): The name of the column.
+
+        Returns:
+            bool: True if column exists, False otherwise.
+        """
+        if self.records:
+            return hasattr(self.records[0], column_name)
+        return False
+
+    def get_column_data(self, column_name):
+        """
+        Gathers data for a specific column to generate charts.
+
+        Args:
+            column_name (str): The name of the column.
+
+        Returns:
+            dict: A dictionary with unique values as keys and their occurrences as values.
+        """
+        column_data = {}
+        for record in self.records:
+            value = getattr(record, column_name, None)
+            if value:
+                column_data[value] = column_data.get(value, 0) + 1
+        if not column_data:
+            print(f"Column '{column_name}' exists but contains no data.")
+        return column_data
