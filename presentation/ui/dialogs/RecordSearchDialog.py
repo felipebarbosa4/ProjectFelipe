@@ -2,7 +2,19 @@ from PyQt5.QtWidgets import QLineEdit, QFormLayout, QDialog, QPushButton
 
 
 class RecordSearchDialog(QDialog):
+    """
+    A dialog for searching records based on various criteria.
+
+    Attributes:
+        inputs (dict): A dictionary of QLineEdit widgets for user input.
+    """
     def __init__(self, parent=None):
+        """
+        Initializes a new instance of RecordSearchDialog.
+
+        Args:
+            parent (QWidget, optional): The parent widget. Defaults to None.
+        """
         super().__init__(parent)
         self.setWindowTitle("Search Records")
 
@@ -23,4 +35,10 @@ class RecordSearchDialog(QDialog):
         self.layout.addRow(self.search_button)
 
     def get_search_criteria(self):
+        """
+        Retrieves the search criteria from the input fields.
+
+        Returns:
+            dict: A dictionary where the key is the field name and the value is the text entered by the user.
+        """
         return {field: self.inputs[field].text() for field in self.inputs}

@@ -2,7 +2,23 @@ from PyQt5.QtWidgets import QFormLayout, QDialog, QLineEdit, QPushButton
 
 
 class RecordEditDialog(QDialog):
+    """
+    A dialog for editing an existing record.
+
+    Allows the user to edit the details of a record. Fields are pre-populated with
+    existing data, which can be updated.
+
+    Attributes:
+        inputs (dict): A dictionary of QLineEdit widgets representing record fields.
+    """
     def __init__(self, record_data, parent=None):
+        """
+        Initializes the dialog with a form for editing a record.
+
+        Args:
+            record_data (dict): A dictionary containing the record's current data.
+            parent (QWidget, optional): The parent widget. Defaults to None.
+        """
         super().__init__(parent)
         self.setWindowTitle("Edit Record")
 
@@ -20,4 +36,10 @@ class RecordEditDialog(QDialog):
         self.layout.addRow(self.confirm_button)
 
     def get_data(self):
+        """
+        Retrieves the data from the input fields.
+
+        Returns:
+            dict: A dictionary with the field names as keys and the updated data as values.
+        """
         return {field: self.inputs[field].text() for field in self.inputs}
