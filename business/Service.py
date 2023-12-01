@@ -30,13 +30,14 @@ class Service:
         """
         Reloads data from the CSV file into the records list.
         """
-        self.records = self.datastore.read_csv('travelq.csv')
+        self.records = self.datastore.read_csv('../../data/travelq.csv')
 
     def save_data(self):
         """
         Saves current records to the CSV file.
         """
-        self.datastore.save_csv('travelq.csv', self.records)
+        self.datastore.save_csv('../../data/travelq.csv', self.records)
+
 
     def create_record(self, data):
         """
@@ -68,45 +69,15 @@ class Service:
         """
         del self.records[index]
 
-    def generate_chart(self):
-        print("1: Horizontal Bar Chart\n2: Vertical Bar Chart\n3: Pie Chart")
-        chart_choice = input("Select chart type: ")
-        column_name = input("Enter column name for chart data: ")
-
-        if chart_choice == '1':
-            self.create_horizontal_bar_chart(column_name)
-        elif chart_choice == '2':
-            self.create_vertical_bar_chart(column_name)
-        elif chart_choice == '3':
-            self.create_pie_chart(column_name)
-
-    def create_horizontal_bar_chart(self, column_name):
-        data = self.service.get_column_data(column_name)
-        plt.barh(list(data.keys()), list(data.values()))
-        plt.xlabel('Count')
-        plt.ylabel(column_name)
-        plt.title('Horizontal Bar Chart')
-        plt.show()
-
-    def create_vertical_bar_chart(self, column_name):
-        data = self.service.get_column_data(column_name)
-        plt.bar(list(data.keys()), list(data.values()))
-        plt.xlabel(column_name)
-        plt.ylabel('Count')
-        plt.title('Vertical Bar Chart')
-        plt.show()
-
-    def create_pie_chart(self, column_name):
-        data = self.service.get_column_data(column_name)
-        plt.pie(list(data.values()), labels=list(data.keys()), autopct='%1.1f%%')
-        plt.title('Pie Chart')
-        plt.show()
 
     def load_data_async(self):
         """
         Initiates asynchronous loading of data from the CSV file.
         """
-        self.datastore.async_read_csv('travelq.csv', self._update_records)
+        print("Current WD:", os.getcwd())
+        print("Absolute path:", os.path.abspath('data/travelq.csv'))
+
+        self.datastore.async_read_csv('../../data/travelq.csv', self._update_records)
 
     def _update_records(self, records):
         """

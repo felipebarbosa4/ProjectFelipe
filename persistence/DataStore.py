@@ -31,7 +31,10 @@ class DataStore:
             list: A list of Record objects read from the file.
         """
         records = []
-
+        full_path = os.path.join(os.getcwd(), filename)
+        if not os.path.exists(full_path):
+            print(f"File does not exist: {full_path}")
+            return []
         try:
             with open(filename, 'r', encoding='ansi') as f:
                 reader = csv.DictReader(f)
@@ -65,6 +68,7 @@ class DataStore:
             filename (str): The name of the file to read from.
             callback (function): The callback function to be executed after completion of the read operation.
         """
+        print(os.getcwd())
         thread = threading.Thread(target=self._threaded_read_csv, args=(filename, callback))
         thread.start()
 
